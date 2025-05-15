@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Система онлайн голосувань</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="auth-buttons">
+      <button>Увійти</button>
+      <button>Зареєструватися</button>
+    </div>
+
+    <!-- Модальне вікно реєстрації -->
+<div class="modal" id="registerModal">
+  <div class="modal-content">
+    <button class="close-modal" id="closeRegisterModalBtn">&times;</button>
+    <h3>Реєстрація</h3>
+    <input type="email" id="registerEmail" placeholder="Email" required>
+    <input type="password" id="registerPassword" placeholder="Пароль" required>
+    <button class="register-btn" id="registerBtn">Зареєструватися</button>
+    <div id="registerError" class="modal-error"></div>
+  </div>
+</div>
+    
+    <h1>Система онлайн голосувань</h1>
+    <p class="subtitle">Обирай. Дискутуй. Голосуй.</p>
+
+    <div class="action-buttons">
+      <button>Створить нове голосування</button>
+      <button id="show-active">Переглянути активні голосування</button>
+      <ul id="active-polls"></ul>
+    </div>
+
+    <h2>Активні голосування</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Назва голосування</th>
+          <th colspan="2">Кількість кандидатів / голосів</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Сюди JS буде додавати рядки -->
+      </tbody>
+    </table>
+  </div>
+  <script src="voting.js"></script>
+</body>
+</html>
