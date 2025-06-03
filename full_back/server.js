@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require('path');
 const app = express();
 const PORT = 3000;
 
@@ -25,10 +26,10 @@ app.use(cors({
 }));
 
 
-app.use(express.static('/Users/oleksandratyshchenko/Desktop/cursova/full_front'));
+app.use(express.static(path.join(__dirname, '../full_front')));
 
 app.get('/', (req, res) => {
-  res.sendFile('/Users/oleksandratyshchenko/Desktop/cursova/full_front/voting.html'); 
+  res.sendFile(path.join(__dirname, '../full_front/voting.html'));
 });
 
 // Маршрути
