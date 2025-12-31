@@ -3,20 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const API_URL = "http://localhost:3000/api";
   let currentUser = null;
 
-  // --- ПРИБРАНО автоматичне відновлення користувача ---
-  // const savedUser = localStorage.getItem('currentUser');
-  // if (savedUser) {
-  //   try {
-  //     currentUser = JSON.parse(savedUser);
-  //     if (!currentUser.id) {
-  //       currentUser = null;
-  //     }
-  //   } catch (e) {
-  //     currentUser = null;
-  //   }
-  // }
 
-  // --- Додаємо відображення кнопок/напису ---
   const authButtons = document.querySelector('.auth-buttons');
   function renderAuthBlock() {
     if (currentUser) {
@@ -32,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <button>Увійти</button>
         <button>Зареєструватися</button>
       `;
-      // Повторно підключаємо обробники для кнопок
       document.querySelector(".auth-buttons button:first-child").addEventListener("click", loginHandler);
       document.querySelector(".auth-buttons button:nth-child(2)").onclick = function() {
         document.getElementById('registerModal').classList.add('active');
@@ -55,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentUser = { id: data.userId, email };
         alert("Ви успішно увійшли!");
         renderAuthBlock();
-        loadVotings(); // <-- ОНОВЛЕНО: одразу оновлюємо таблицю
+        loadVotings(); 
       } else {
         const error = await response.json();
         alert(`Помилка: ${error.message}`);
@@ -65,20 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- Відразу рендеримо блок авторизації ---
   renderAuthBlock();
 
   // Елементи DOM
   const createVotingBtn = document.querySelector(".action-buttons button:first-child");
   const votingsTable = document.querySelector("tbody");
 
-  // Зберігаємо всі голосування для доступу до кандидатів
   let allVotings = [];
 
-  // Завантажити активні голосування при завантаженні сторінки
   loadVotings();
 
-  // Кнопка "Створити нове голосування"
   createVotingBtn.addEventListener("click", () => {
     if (!currentUser) {
       alert("Увійдіть у систему, щоб створити голосування!");
@@ -87,15 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
     createVoting();
   });
 
-
-// Додаємо обробник для кнопки "Переглянути активні голосування"
 document.getElementById('show-active').onclick = function() {
-  // Знімаємо підсвічування з усіх рядків
   document.querySelectorAll("tbody tr").forEach(row => {
     row.classList.remove("highlight", "highlight-fade");
   });
 
-  // Підсвічуємо лише активні голосування
   const highlightedRows = [];
   allVotings.forEach((voting, idx) => {
     if (voting.isActive) {
@@ -107,10 +85,8 @@ document.getElementById('show-active').onclick = function() {
     }
   });
 
-  // Через 2 секунди запускаємо плавне зникнення
   setTimeout(() => {
     highlightedRows.forEach(row => row.classList.add("highlight-fade"));
-    // Через 0.5 секунди прибираємо обидва класи
     setTimeout(() => {
       highlightedRows.forEach(row => row.classList.remove("highlight", "highlight-fade"));
     }, 500);
@@ -122,18 +98,16 @@ document.getElementById('show-active').onclick = function() {
     try {
       const response = await fetch(`${API_URL}/voting/active`);
       const votings = await response.json();
-      allVotings = votings; // Зберігаємо для подальшого використання
+      allVotings = votings;
       renderVotings(votings);
     } catch (error) {
       console.error("Помилка завантаження голосувань:", error);
     }
   }
 
-  // Відображення голосувань у таблиці
   function renderVotings(votings) {
     votingsTable.innerHTML = "";
     votings.forEach(voting => {
-      // Додайте цей рядок для дебагу:
       console.log('ownerId:', voting.ownerId, 'currentUser.id:', currentUser?.id, 'eq:', String(voting.ownerId) === String(currentUser?.id));
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -159,16 +133,14 @@ document.getElementById('show-active').onclick = function() {
       votingsTable.appendChild(row);
     });
 
-    // Тільки для кнопок "Проголосувати"
     document.querySelectorAll(".vote-btn").forEach(btn => {
       btn.addEventListener("click", () => voteFor(btn.dataset.id));
     });
 
-    // Тільки для кнопок "Додати кандидата"
     document.querySelectorAll(".add-candidate-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const name = prompt("Введіть імʼя кандидата:");
-        if (name === null || name.trim() === "") return; // <-- ОНОВЛЕНО
+        if (name === null || name.trim() === "") return;
         addCandidate(btn.dataset.id, name.trim());
       });
     });
@@ -219,7 +191,6 @@ document.getElementById('show-active').onclick = function() {
     });
   }
 
-  // Додаємо функцію для додавання кандидата
 
   async function addCandidate(votingId, candidateName) {
 
@@ -239,10 +210,9 @@ document.getElementById('show-active').onclick = function() {
   
     const candidate = await response.json();
     alert('Кандидата додано: ' + candidate.name);
-    loadVotings(); // Додаємо оновлення списку голосувань
+    loadVotings(); 
   }
 
-  // Оновлена функція голосування
   async function voteFor(votingId) {
     if (!currentUser) {
       alert("Увійдіть у систему, щоб голосувати!");
@@ -257,12 +227,10 @@ document.getElementById('show-active').onclick = function() {
       alert("Голосування ще не запущено!");
       return;
     }
-    // Якщо кандидатів немає — повідомлення
     if (!voting.candidates || voting.candidates.length === 0) {
       alert("У цьому голосуванні ще немає жодного кандидата.");
       return;
     }
-    // Формуємо список кандидатів з номерами
     const candidatesList = voting.candidates
       .map((c, idx) => `${idx + 1}. ${c.name}`)
       .join('\n');
@@ -274,7 +242,6 @@ document.getElementById('show-active').onclick = function() {
       return;
     }
     const candidate = voting.candidates[num - 1];
-    // Відправляємо голос
     try {
       const response = await fetch(`${API_URL}/vote`, {
         method: 'POST',
@@ -297,7 +264,6 @@ document.getElementById('show-active').onclick = function() {
     }
   }
 
-  // Функція створення нового голосування (спрощений варіант)
   async function createVoting() {
     const title = prompt("Введіть назву голосування:");
     if (!title) return;
@@ -336,7 +302,6 @@ document.getElementById('show-active').onclick = function() {
     document.getElementById('registerError').textContent = '';
   }
 
-  // Додаємо обробник для кнопки "Зареєструватися"
 document.querySelector('.auth-buttons button:nth-child(2)').onclick = function() {
   document.getElementById('registerModal').classList.add('active');
 };
