@@ -290,20 +290,17 @@ td button:hover {
   }
 }
 
-/* Вирівнюємо дані в один рядок */
 .voting-stats-row {
   display: flex;
   gap: 40px;
   align-items: center;
 }
 
-/* Відступ між кнопками */
 .voting-actions {
   display: flex;
   gap: 16px;
 }
 
-/* Вирівнюємо кнопки в один рядок і переносимо, якщо не влазять */
 .voting-actions {
   display: flex;
   flex-wrap: wrap;
@@ -313,7 +310,6 @@ td button:hover {
   min-width: 220px;
 }
 
-/* Робимо кнопки компактнішими для таблиці */
 .voting-actions button {
   margin: 0;
   min-width: 140px;
@@ -323,7 +319,6 @@ td button:hover {
   white-space: nowrap;
 }
 
-/* Для маленьких екранів — кнопки одна під одною */
 @media (max-width: 700px) {
   .voting-actions {
     flex-direction: column;
@@ -336,7 +331,6 @@ td button:hover {
   }
 }
 
-/* Додайте цей стиль у ваш CSS */
 .highlight {
   background-color: #ffe066 !important;
   transition: background 0.3s, opacity 0.5s;
