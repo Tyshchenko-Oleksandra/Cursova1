@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Voting = require('../models/voting'); // Переконайтеся, що шлях вірний
-const Candidate = require('../models/candidate'); // Додай імпорт
+const Voting = require('../models/voting'); 
+const Candidate = require('../models/candidate'); 
 const mongoose = require('mongoose');
-const Vote = require('../models/vote'); // Додай цей імпорт
+const Vote = require('../models/vote');
 
 // POST-маршрут для створення голосування
 router.post('/create', async (req, res) => {
@@ -103,4 +103,4 @@ router.post('/:id/stop', async (req, res) => {
 });
 
 
-module.exports = router; // Експортуємо ТІЛЬКИ ОДИН раз
+module.exports = router;
